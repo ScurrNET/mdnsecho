@@ -1,0 +1,18 @@
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+# <id>: WARNING: This field has a non-traditional meaning for BusyBox init!
+# <runlevels>: The runlevels field is completely ignored.
+# <action>: Valid actions include: sysinit, respawn, askfirst, wait, once,
+#                                  restart, ctrlaltdel, and shutdown.
+# <process>: Specifies the process to be executed and it's command line.
+
+#::sysinit:/sbin/openrc sysinit
+#::sysinit:/sbin/openrc boot
+::sysinit:/bin/ln -vs /etc/init.d/mdns-repeater /etc/runlevels/default/mdns-repeater
+::sysinit:/bin/ln -vs /etc/init.d/interfaces /etc/runlevels/default/interfaces
+::sysinit:/bin/chmod -vf 755 /etc/init.d/mdns-repeater /etc/init.d/interfaces
+::sysinit:/bin/rm -f /etc/init.d/hwdrivers /etc/init.d/machine-id
+::wait:/sbin/openrc default
+
+# ::once:/bin/sh
+
+::shutdown:/sbin/openrc shutdown

@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+
+start() {
+#  (Commands necessary to prepare to start the service)
+	ebegin "Starting ${RC_SVCNAME}"
+
+	if [[ -n "${DEBUG}" ]]; then
+		cat /etc/network/interfaces
+	fi
+
+	ifup -af
+    sleep 1
+    export IFACE=$(ifconfig | grep 'encap:Ethernet' | awk '{iface=iface" "$1}; END {print iface}')
+    echo "START_OPTS=\"${IFACE}\"" > /etc/conf.d/mdns-repeater
+
+	eend $?
+}
+
+stop() {
+#  (Commands necessary to stop the service)
+	ebegin "Stopping ${RC_SVCNAME}"
+
+	sleep 1
+	ifdown -af
+	ip a
+
+    echo 'START_OPTS=""' > /etc/conf.d/mdns-repeater
+
+	eend $?
+}

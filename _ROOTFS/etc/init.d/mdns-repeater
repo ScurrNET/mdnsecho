@@ -1,0 +1,20 @@
+#!/sbin/openrc-run
+
+### https://github.com/OpenRC/openrc/blob/master/service-script-guide.md
+
+# extra_commands=""
+# extra_started_commands=""
+# extra_stopped_commands=""
+
+depend() {
+	need interfaces
+}
+
+command=/${RC_SVCNAME}
+command_args="${START_OPTS}"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+start_pre() {
+	ebegin "Running ${RC_SVCNAME} on interfaces: ${START_OPTS}"
+	eend $?
+}
